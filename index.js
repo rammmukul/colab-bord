@@ -3,12 +3,20 @@ const app = express()
 const http = require('http').Server(app)
 const io = require('socket.io')(http)
 const path = require('path')
+const ot = require('ot')
 
 io.on('connection', function (socket) {
   socket.join(1)
   socket.on('join', function (name) {
     console.log('joined')
     socket.join(1)
+  })
+
+  let otServer = new ot.Server('// Start coding...\n  ')
+
+  socket.on('operation', function (operation) {
+    console.log(operation)
+    socket.emit('operation', ot.Operation.formJSON(operation))
   })
 
   socket.on('change', function (change) {

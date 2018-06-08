@@ -17,6 +17,7 @@
   </style>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/ace/1.3.3/ace.js"></script>
   <script src="/socket.io/socket.io.js"></script>
+  <script src="ot.js"></script>
 </head>
 
 <body>
@@ -31,12 +32,16 @@
   editor.session.setMode("ace/mode/javascript")
   
   var socket = io()
+  let otClient = new ot.Client(0)
   let me = Math.random()
   let latest = Date.now()
   let busy = false
 
   editor.on('change', (change) => {
-    console.log('sending', change)
+    console.log('change', change)
+
+    // let operation = otClient.createOperation()
+
     let now = Date.now()
     if (latest < now && !busy) {
       socket.emit('change', [now, editor.getValue()])
